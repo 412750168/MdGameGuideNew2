@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/hand"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.6"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textview_wireless_function_name"
+            style="@style/fontStyle_white_40dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="@string/connect_wireless_name" />
+
+        <TextView
+            android:id="@+id/textview_wirless_ssid"
+            style="@style/fontStyle_white_20dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/edittext_password"
+            style="@style/fontStyle_white_30dp"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/password_input"
+            android:hint="@string/input_password"
+            android:textColorHint="#363636"
+            android:paddingLeft="10dp"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/button_connect"
+            style="@style/fontStyle_white_30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_statue_grav_green"
+            android:gravity="center"
+            android:text="@string/connect"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listview_wireless"
+        android:layout_width="800dp"
+        android:layout_height="310dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_weight="1"
+        android:divider="@drawable/seperate_line"
+        android:dividerHeight="2dp"
+        android:listSelector="@drawable/test_button_statue_tran_green"
+        android:nextFocusDown="@+id/button_wireless_cancel" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/textview_open_wifi"
+        style="@style/fontStyle_white_20dp"
+        android:layout_width="800dp"
+        android:layout_height="310dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/opening_wifi"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.6"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/button_wireless_cancel"
+            style="@style/fontStyle_white_30dp"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:background="@drawable/button_statue_tran_green"
+            android:gravity="center"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/button_wireless_jump"
+            style="@style/fontStyle_white_30dp"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:background="@drawable/button_statue_tran_green"
+            android:gravity="center"
+            android:text="@string/jump" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="75dp"
+        android:orientation="horizontal" >
+        
+        <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/fontStyle_white_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="@string/sure"
+            android:drawableLeft="@drawable/a"
+            />
+        
+        <TextView
+            style="@style/fontStyle_white_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_marginLeft="20dp"
+            android:drawableLeft="@drawable/b"
+             />
+        
+        <TextView
+            style="@style/fontStyle_white_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="@string/jump"
+            android:layout_marginLeft="20dp"
+            android:drawableLeft="@drawable/x"
+            />
+    </LinearLayout>
+        
+    </LinearLayout>
+
+</LinearLayout>

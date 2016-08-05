@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MdGameGuide</string>
+    <string name="hello_world">Hello world!</string>
+	<string name="wireless_network">\twireless network</string>
+	<string name="wired_network">\twired network</string>
+	<string name="network_setting">Network Setting</string>
+	<string name="jump">jump</string>
+	<string name="sure">sure</string>
+	<string name="connect_wireless_name">Connect wireless name</string>
+	<string name="input_wireless_secret">Input wireless screct</string>
+	<string name="connet_wired_name">Connect wired Network</string>
+	<string name="wired_input_line">Please connect the mdgame box to the Internet</string>
+	<string name="wired_connect_success">Network connect success</string>
+	<string name="cancel">back</string>
+	<string name="wifi_saved"> Saved</string>
+	<string name="no_range">NO range</string>
+	<string name="connect">Connected</string>
+	<string name="connecting">Being verified</string>
+	<string name="input_password">\tInput password</string>
+	<string name="auth_problem">Validation failure</string>
+	<string name="welcome">Welcome Mdgame box</string>
+	<string name="hand">Hand connect</string>
+	<string name="hand_success">Hand connect Success</string>
+	<string name="noti">Press the HOME button for 3 seconds after release,\n the tip is in a flash, the handle is connected</string>
+	<string name="finish">Congratulations! You have completed all settings</string>
+	<string name="pass_lenth">Password can not be less than 8</string>
+	<string name="opening_wifi">Is open wlan...</string>
+</resources>

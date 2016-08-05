@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FrameLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wired_network" >
+
+    <AbsoluteLayout
+        android:id="@+id/AbsoluteLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ImageView
+            android:id="@+id/imageView_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="668dp"
+            android:layout_y="488dp"
+            android:src="@drawable/circle" />
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/fontStyle_white_40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="449dp"
+            android:layout_y="68dp"
+            android:text="@string/connet_wired_name" />
+
+        <TextView
+            android:id="@+id/textView_wired_statue"
+            style="@style/fontStyle_white_20dp"
+            android:layout_width="450dp"
+            android:layout_height="wrap_content"
+            android:layout_x="269dp"
+            android:layout_y="517dp"
+            android:gravity="center"
+            android:text="@string/wired_input_line" />
+
+        <Button
+            android:id="@+id/button_wired_jump"
+            style="@style/fontStyle_white_30dp"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:layout_x="429dp"
+            android:layout_y="581dp"
+            android:background="@drawable/button_statue_tran_green"
+            android:gravity="center"
+            android:text="@string/jump" />
+
+        <Button
+            android:id="@+id/button_wired_cancel"
+            style="@style/fontStyle_white_30dp"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:layout_x="211dp"
+            android:layout_y="579dp"
+            android:background="@drawable/button_statue_tran_green"
+            android:gravity="center"
+            android:text="@string/cancel" />
+
+    </AbsoluteLayout>
+
+</FrameLayout>

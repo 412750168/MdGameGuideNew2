@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="NewApi">
+        <ignore path="src/zzl/bestidear/mdgameguide/HandFragment.java" />
+        <ignore path="src/zzl/bestidear/mdgameguide/MainActivity.java" />
+        <ignore path="src/zzl/bestidear/mdgameguide/NetworkWirelessFragment.java" />
+        <ignore path="src/zzl/bestidear/mdgameguide/WelcomeFragment.java" />
+    </issue>
+</lint>

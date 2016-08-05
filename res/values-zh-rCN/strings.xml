@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MdGameGuide</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="wireless_network">\t无线网络</string>
+    <string name="wired_network">\t有线网络</string>
+    <string name="network_setting">网络连接</string>
+    <string name="jump">跳转</string>
+    <string name="sure">确定</string>
+    <string name="connect_wireless_name">连接无线网络</string>
+    <string name="input_wireless_secret">输入无线网络的密码</string>
+    <string name="connet_wired_name">连接有线网络</string>
+    <string name="wired_input_line">请将 MODAN 盒子 连接上网线</string>
+    <string name="lan_cable">LAN Cable</string>
+    <string name="wired_connect_success">网络连接成功</string>
+    <string name="cancel">返回</string>
+    <string name="wifi_saved"> 已保存</string>
+    <string name="no_range">不在范围</string>
+    <string name="connect">连接成功</string>
+    <string name="connecting">正在验证</string>
+    <string name="input_password">输入密码</string>
+    <string name="auth_problem">验证失败</string>
+    <string name="welcome">欢 迎 使 用 魔 蛋 主 机</string>
+    <string name="hand">手柄连接</string>
+    <string name="hand_success">手柄连接成功</string>
+    <string name="hand_success_2">手柄连接成功!</string>
+    <string name="noti">请使用USB线连接魔蛋主机和手柄</string>
+    <string name="noti_fail">连接失败，请重新接入USB连接线</string>
+    <string name="noti_connecting">正在连接，请耐心等待...</string>
+    <string name="finish">恭喜! 您已完成所有设置。</string>
+    <string name="pass_lenth">密码不能小于8位</string>
+    <string name="opening_wifi">正在打开wlan...</string>
+    <string name="network">  网络</string>
+
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/netwroksetting_background"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/fontStyle_white_40dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/network_setting" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/button_wireless_network"
+            style="@style/fontStyle_white_40dp"
+            android:layout_width="800dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:background="@drawable/button_statue_tran_green"
+            android:gravity="left|center"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:text="@string/wireless_network" />
+
+        <Button
+            android:id="@+id/button_wired_network"
+            style="@style/fontStyle_white_40dp"
+            android:layout_width="800dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:background="@drawable/button_statue_tran_green"
+            android:gravity="left|center"
+            android:text="@string/wired_network" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FrameLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wired_network" >
+
+    <AbsoluteLayout
+        android:id="@+id/AbsoluteLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ImageView
+            android:id="@+id/imageView_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="668dp"
+            android:layout_y="488dp"
+            android:src="@drawable/circle" />
+
+        <TextView
+            android:id="@+id/textView_wired_statue"
+            style="@style/fontStyle_white_20dp"
+            android:layout_width="450dp"
+            android:layout_height="wrap_content"
+            android:layout_x="269dp"
+            android:layout_y="517dp"
+            android:gravity="center"
+            android:text="@string/wired_input_line" />
+
+        <Button
+            android:id="@+id/button_wired_jump"
+            style="@style/fontStyle_white_30dp"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:layout_x="429dp"
+            android:layout_y="581dp"
+            android:visibility="gone"
+            android:background="@drawable/button_statue_tran_green"
+            android:gravity="center"
+            android:text="@string/jump" />
+
+        <Button
+            android:id="@+id/button_wired_cancel"
+            style="@style/fontStyle_white_30dp"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:layout_x="211dp"
+            android:layout_y="579dp"
+            android:background="@drawable/button_statue_tran_green"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/cancel" />
+
+        <TextView
+            android:id="@+id/textView_wiredtitle"
+            style="@style/fontStyle_white_66dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="75dp"
+            android:layout_y="58dp"
+            android:text="@string/connet_wired_name" />
+
+        <TextView
+            android:id="@+id/textview_lancable"
+            style="@style/fontStyle_green_24dp"
+            android:layout_width="147dp"
+            android:layout_height="wrap_content"
+            android:layout_x="797dp"
+            android:layout_y="435dp"
+            android:gravity="center"
+            android:text="@string/lan_cable" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="75dp"
+            android:layout_x="2dp"
+            android:layout_y="647dp"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/textview_b2"
+                    style="@style/fontStyle_white_20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/b"
+                    android:gravity="center"
+                    android:text="@string/cancel" />
+
+                <TextView
+                    android:id="@+id/textview_x2"
+                    style="@style/fontStyle_white_20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:drawableLeft="@drawable/x"
+                    android:gravity="center"
+                    android:text="@string/jump" />
+            </LinearLayout>
+        </LinearLayout>
+
+</AbsoluteLayout>
+
+</FrameLayout>

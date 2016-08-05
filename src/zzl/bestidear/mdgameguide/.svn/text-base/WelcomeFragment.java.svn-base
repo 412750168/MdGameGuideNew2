@@ -1,0 +1,44 @@
+package zzl.bestidear.mdgameguide;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.app.Fragment;
+import android.os.Bundle;
+import android.text.format.Time;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+public class WelcomeFragment extends Fragment{
+
+	private View view;
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		view = inflater.inflate(R.layout.welcome, container, false);	
+		return view;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		TimerTask timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				((MainActivity)getActivity()).getHandler().obtainMessage(MainActivity.HANDLE_WELCOME_FRAGMENT_DISMISS).sendToTarget();
+
+			}
+		};
+		Timer timer = new Timer();
+		timer.schedule(timerTask, 5000);
+		super.onActivityCreated(savedInstanceState);
+	}
+
+	
+	
+}

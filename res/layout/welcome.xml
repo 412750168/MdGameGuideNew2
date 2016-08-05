@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/AbsoluteLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/welcome" >
+
+    <TextView
+        android:id="@+id/textview_welcome"
+        style="@style/fontStyle_blue_gray_36dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_x="-3dp"
+        android:layout_y="61dp"
+        android:gravity="center"
+        android:text="@string/welcome"
+        android:visibility="visible" />
+
+</AbsoluteLayout>

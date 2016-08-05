@@ -1,0 +1,360 @@
+package zzl.bestidear.mdgameguide;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.security.auth.callback.Callback;
+
+import android.R.bool;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.app.Instrumentation;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.hardware.usb.UsbManager;
+import android.net.ConnectivityManager;
+import android.net.ethernet.EthernetManager;
+import android.net.wifi.WifiManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.Settings;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+	
+	public final static String FRAGMENT_FLAG_NAME = "Guide";
+	public final static String INTENT_ACTION_USB = "android.hardware.usb.action.USB_STATE";
+	private final static boolean WIFI = true;
+	private final static boolean ETH  = false;
+	
+	public final static int HANDLE_WELCOME_FRAGMENT_DISMISS = 0x400 + 1;
+	public final static int HANDLE_HAND_USB_CONNECT_STATE   = 0x400 + 2;
+	public final static int HANDLE_HAND_FRAGMENT_DISMISS    = 0x400 + 3;
+	public final static int HANDLE_NETWORK_WIRED 			= 0x400	+ 4;
+	public final static int HANDLE_NETWORK_WIRELESS			= 0x400 + 5;
+	public final static int HANDLE_ETH_STATE				= 0x400 + 6;
+	public final static int HANDLE_WIFI_STATE				= 0x400 + 7;
+	public final static int HANDLE_WIFI_STATE_NEW 		    = 0x400 + 18;
+
+	public final static int HANDLE_HAND_BLUETOOTH_CONNECT_STATE = 0x400 + 8;
+	public final static int HANDLE_HAND_BLUETOOTH_BOND_NONE = 0x400 + 9;
+	public final static int HANDLE_NETWORK_WIRELESS_AUTH_PROBLEM = 0x400 + 10;
+	public final static int HANDLE_END_FRAGMENT_FINISH		= 0x400 + 11;
+	public final static int HANDLE_NETWORK_WIRED_DISMISS    = 0x400 + 12;
+	public final static int HANDLE_NETWORK_WIRELESS_DISMISS = 0x400 + 13;
+	public final static int HANDLE_NETWORK_WIRED_BACK 		= 0x400 + 14;
+	public final static int HANDLE_NETWORK_WIRELESS_BACK    = 0x400 + 15;
+	
+	public final static int HANDLE_INPUT_METHOD 			= 0x400 + 16;
+	public final static int HANDLE_WIFI_SCAN_RESULT 		= 0x400 + 17;
+	
+	private WelcomeFragment welcomeFragment;
+	private HandFragment handFragment;
+	private Fragment currentFragment ;
+	private NetWorkSettingFragment netWorkSetting;
+	private NetworkWiredFragment networkWiredFragment;
+	private NetworkWirelessFragment networkWirelessFragment;
+	private EndFragment endFragment;
+
+	private IntentFilter intentFilter;
+	private DealBroadCast dealBroadCast;
+	
+	private Handler handler;
+	private EthernetManager ethernetManager;
+	private WifiManager wifiManager;
+	
+	final Instrumentation mInstrumentation=new Instrumentation();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+				
+		initFragment();
+		ethernetManager = (EthernetManager)getSystemService(Context.ETH_SERVICE);
+		wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+		
+		handler = new Handler(){
+
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+				//super.handleMessage(msg);
+				switch(msg.what){
+				case HANDLE_WELCOME_FRAGMENT_DISMISS:
+					getFragmentManager().beginTransaction().hide(welcomeFragment).show(handFragment).commitAllowingStateLoss();
+					currentFragment = handFragment;
+					handFragment.setEnterIsHaveUsb();
+					handFragment.startBluetoothDiscovery();
+					break;
+				case HANDLE_HAND_FRAGMENT_DISMISS:
+					getFragmentManager().beginTransaction().hide(handFragment).show(netWorkSetting).commitAllowingStateLoss();
+					netWorkSetting.setwirelessFocus();
+					networkWirelessFragment.setConnectingDeviceNULL();
+					currentFragment = netWorkSetting;
+					break;
+				case HANDLE_NETWORK_WIRED:
+					getFragmentManager().beginTransaction().hide(netWorkSetting).show(networkWiredFragment).commitAllowingStateLoss();
+					//if(ethernetManager != null && ethernetManager.getEthState() == EthernetManager.ETH_STATE_DISABLED)
+					//ethernetManager.setEthEnabled(true);
+					openWifiorEth(ETH);
+					currentFragment = networkWiredFragment;
+					break;
+				case HANDLE_NETWORK_WIRELESS:
+					getFragmentManager().beginTransaction().hide(netWorkSetting).show(networkWirelessFragment).commitAllowingStateLoss();
+					openWifiorEth(WIFI);
+					networkWirelessFragment.setConnectingDeviceNULL();
+					//networkWirelessFragment.refreshWifiList();
+					currentFragment = networkWirelessFragment;
+					break;
+					
+				case HANDLE_HAND_BLUETOOTH_CONNECT_STATE:	
+					if(currentFragment == handFragment){
+						//Toast.makeText(MainActivity.this, "This is Hand connected", Toast.LENGTH_LONG).show();
+						handFragment.stopAnimation();
+						handFragment.setConnectSuccess();
+						handFragment.setHandFragmentHide();
+					}
+					break;
+				case HANDLE_HAND_BLUETOOTH_BOND_NONE:
+					handFragment.startBluetoothDiscovery();
+					handFragment.startProblemAnimation();
+					break;
+				case HANDLE_ETH_STATE:
+					//if(currentFragment == networkWiredFragment)
+					//{
+						String str = (String)msg.obj;
+						if(str.equals("true")){
+							//Toast.makeText(MainActivity.this, "This is etho connect", Toast.LENGTH_LONG).show();
+							networkWiredFragment.setWiredConnectSuccess();
+						}else {
+							networkWiredFragment.setWiredDisConnect();
+						}		
+					//}
+					break;
+					
+				case HANDLE_WIFI_STATE:	
+					networkWirelessFragment.refreshWifiList();
+					break;
+					
+				case HANDLE_WIFI_STATE_NEW:
+					networkWirelessFragment.newRefreshWifiList();
+					break;
+					
+				case HANDLE_NETWORK_WIRELESS_AUTH_PROBLEM:
+					networkWirelessFragment.authHasProblem();
+					break;
+					
+				case HANDLE_END_FRAGMENT_FINISH:
+					
+					// Add a persistent setting to allow other apps to know the device has been provisioned.
+			        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
+			        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
+
+			        // remove this activity from the package manager.
+			        PackageManager pm = getPackageManager();
+			        ComponentName name = new ComponentName(MainActivity.this, MainActivity.class);
+			        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+			                PackageManager.DONT_KILL_APP);
+				
+					finish();
+					break;
+					
+				case HANDLE_NETWORK_WIRELESS_DISMISS:
+					getFragmentManager().beginTransaction().hide(networkWirelessFragment).show(endFragment).commitAllowingStateLoss();
+					endFragment.setFinishActivity();
+					currentFragment = endFragment;
+					break;
+					
+				case HANDLE_NETWORK_WIRED_DISMISS:
+					getFragmentManager().beginTransaction().hide(networkWiredFragment).show(endFragment).commitAllowingStateLoss();
+					endFragment.setFinishActivity();
+					currentFragment = endFragment;
+					break;
+					
+				case HANDLE_NETWORK_WIRELESS_BACK:
+					getFragmentManager().beginTransaction().hide(networkWirelessFragment).show(netWorkSetting).commitAllowingStateLoss();
+					currentFragment = netWorkSetting;
+					break;
+					
+				case HANDLE_NETWORK_WIRED_BACK:
+					getFragmentManager().beginTransaction().hide(networkWiredFragment).show(netWorkSetting).commitAllowingStateLoss();
+					currentFragment = netWorkSetting;
+					netWorkSetting.setwiredFocus();
+					break;
+					
+				case HANDLE_WIFI_SCAN_RESULT:
+					networkWirelessFragment.updateData();
+					break;
+					
+				case HANDLE_HAND_USB_CONNECT_STATE:
+					//this is usb function
+					boolean state = (boolean)msg.obj;
+					handFragment.setHandJumpButtonVisible(state);
+					//Toast.makeText(MainActivity.this, "usb-statue::"+state, Toast.LENGTH_LONG).show();
+					break;
+					
+				}
+			}
+			
+		};
+		
+		intentFilter = new IntentFilter();
+		
+		intentFilter.addAction(INTENT_ACTION_USB);
+		intentFilter.addAction(Intent.ACTION_MEDIA_EJECT);
+		intentFilter.addAction(Intent.ACTION_MEDIA_MOUNTED);
+		intentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);
+		intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+		//intentFilter.addDataScheme("file");
+		intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+		//intentFilter.addAction(BluetoothDevice.ACTION_FOUND);// 用BroadcastReceiver来取得搜索结果 
+		intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED); 
+		//intentFilter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED); 
+		//intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED); 
+		intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+		intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+		intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+		intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+		intentFilter.addAction(WifiManager.CONFIGURED_NETWORKS_CHANGED_ACTION);	 
+        intentFilter.addAction(WifiManager.LINK_CONFIGURATION_CHANGED_ACTION);
+		intentFilter.addAction(Intent.ACTION_UMS_CONNECTED);
+		intentFilter.addAction(Intent.ACTION_UMS_DISCONNECTED);
+		intentFilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+        intentFilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+		
+		dealBroadCast = new DealBroadCast(handler,MainActivity.this);
+		registerReceiver(dealBroadCast, intentFilter);
+		
+	}
+	
+	
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		unregisterReceiver(dealBroadCast);
+		super.onDestroy();
+	}
+
+
+	@Override
+	public boolean onKeyDown(int arg0, KeyEvent arg1) {
+		// TODO Auto-generated method stub
+		if(arg1.getKeyCode() == KeyEvent.KEYCODE_BACK ){
+			
+			if( currentFragment == networkWirelessFragment && !networkWirelessFragment.isInListview() )
+				networkWirelessFragment.inputSecretBack();
+
+			return false;
+			
+		}
+		
+	/*	if(currentFragment == handFragment)
+			handFragment.setHandFragmentHide();
+		// B
+	*/	
+		if(arg1.getKeyCode() == 97 && currentFragment == networkWirelessFragment && networkWirelessFragment.isInListview())
+		{
+			getHandler().obtainMessage(MainActivity.HANDLE_NETWORK_WIRELESS_BACK).sendToTarget();
+			networkWirelessFragment.refreshWifiList();
+		}
+		
+		
+		if(arg1.getKeyCode() == 97 && currentFragment == networkWirelessFragment && !networkWirelessFragment.isInListview())
+			networkWirelessFragment.inputSecretBack();
+		
+		if(arg1.getKeyCode() == 97 && currentFragment == networkWiredFragment)
+			getHandler().obtainMessage(MainActivity.HANDLE_NETWORK_WIRED_BACK).sendToTarget();	
+		//x
+		if(arg1.getKeyCode() == 99 && currentFragment == networkWirelessFragment)
+			getHandler().obtainMessage(MainActivity.HANDLE_NETWORK_WIRELESS_DISMISS).sendToTarget();
+		
+		if(arg1.getKeyCode() == 99 && currentFragment == networkWiredFragment)
+			getHandler().obtainMessage(MainActivity.HANDLE_NETWORK_WIRED_DISMISS).sendToTarget();
+		
+		return super.onKeyDown(arg0, arg1);
+	}
+
+	
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(currentFragment == handFragment)
+			handFragment.setHandFragmentHideNotDelay();
+		return super.onTouchEvent(event);
+	}
+
+
+
+	public Handler getHandler(){
+		
+		return handler;	
+	}
+	
+	private void openWifiorEth(boolean type){
+		if(type){
+			
+			ethernetManager.setEthEnabled(false);
+			networkWiredFragment.setWiredDisConnect();
+			
+			wifiManager.setWifiEnabled(true);
+			
+			if(!wifiManager.isWifiEnabled())
+				networkWirelessFragment.openWifiStatue();
+				
+			new Handler().postDelayed(new Runnable() {
+							
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								handler.obtainMessage(MainActivity.HANDLE_WIFI_STATE)
+								.sendToTarget();
+								if(networkWirelessFragment.isInListview())
+									networkWirelessFragment.closeWifiStatue();
+							}
+						}, 10000);
+							
+			
+		}else{
+			wifiManager.setWifiEnabled(false);
+			ethernetManager.setEthEnabled(true);
+			networkWirelessFragment.openWifiStatue();
+		}
+	}
+	
+	private void initFragment(){
+		
+		welcomeFragment = new WelcomeFragment();
+		handFragment = new HandFragment();
+		netWorkSetting = new NetWorkSettingFragment();
+		networkWiredFragment = new NetworkWiredFragment();
+		networkWirelessFragment = new NetworkWirelessFragment();
+		endFragment = new EndFragment();
+		
+		getFragmentManager().beginTransaction().add(R.id.main, welcomeFragment,FRAGMENT_FLAG_NAME).commitAllowingStateLoss();
+		getFragmentManager().beginTransaction().add(R.id.main, handFragment,FRAGMENT_FLAG_NAME).commitAllowingStateLoss();
+		getFragmentManager().beginTransaction().add(R.id.main, netWorkSetting,FRAGMENT_FLAG_NAME).commitAllowingStateLoss();
+		getFragmentManager().beginTransaction().add(R.id.main, networkWiredFragment,FRAGMENT_FLAG_NAME).commitAllowingStateLoss();
+		getFragmentManager().beginTransaction().add(R.id.main, networkWirelessFragment,FRAGMENT_FLAG_NAME).commitAllowingStateLoss();
+		getFragmentManager().beginTransaction().add(R.id.main, endFragment,FRAGMENT_FLAG_NAME).commitAllowingStateLoss();
+		
+		getFragmentManager().beginTransaction().hide(handFragment).commitAllowingStateLoss();
+		getFragmentManager().beginTransaction().hide(netWorkSetting).commitAllowingStateLoss();
+		getFragmentManager().beginTransaction().hide(networkWiredFragment).commitAllowingStateLoss();
+		getFragmentManager().beginTransaction().hide(networkWirelessFragment).commitAllowingStateLoss();
+		getFragmentManager().beginTransaction().hide(endFragment).commitAllowingStateLoss();
+		
+		currentFragment = welcomeFragment;
+	}
+}
